@@ -3,6 +3,8 @@
 pragma solidity >=0.8.0;
 
 contract Player {
+    address owner;
+
     struct PlayerDetails {
         string name;
         address wallet;
@@ -10,6 +12,14 @@ contract Player {
 
     mapping(address=>PlayerDetails)detailsOfPlayer;
 
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+
+    constructor() {
+        owner = msg.sender;
+    }
 
     function getPlayerAddress(address _user) public view returns(address) {
         return detailsOfPlayer[_user].wallet;
